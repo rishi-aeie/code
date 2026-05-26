@@ -154,3 +154,179 @@ int main() {
 
     return 0;
 }
+
+
+
+#include <stdio.h>
+
+// ---------- QUICK SORT ----------
+
+// Swap function
+void swap(int arr[], int i, int j) {
+
+    int temp;
+
+    temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+// Partition function
+int partition(int arr[], int low, int high) {
+
+    int pivot = arr[high];
+
+    int i = low - 1;
+
+    for(int j = low; j < high; j++) {
+
+        if(arr[j] < pivot) {
+
+            i++;
+
+            swap(arr, i, j);
+        }
+    }
+
+    swap(arr, i + 1, high);
+
+    return i + 1;
+}
+
+// Quick Sort function
+void quickSort(int arr[], int low, int high) {
+
+    if(low < high) {
+
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// ---------- MERGE SORT ----------
+
+// Merge function
+void merge(int arr[], int left, int mid, int right) {
+
+    int n1 = mid - left + 1;
+
+    int n2 = right - mid;
+
+    int L[n1], R[n2];
+
+    // Copy elements into temporary arrays
+    for(int i = 0; i < n1; i++) {
+
+        L[i] = arr[left + i];
+    }
+
+    for(int j = 0; j < n2; j++) {
+
+        R[j] = arr[mid + 1 + j];
+    }
+
+    int i = 0;
+    int j = 0;
+    int k = left;
+
+    // Merge arrays
+    while(i < n1 && j < n2) {
+
+        if(L[i] <= R[j]) {
+
+            arr[k] = L[i];
+            i++;
+        }
+
+        else {
+
+            arr[k] = R[j];
+            j++;
+        }
+
+        k++;
+    }
+
+    // Remaining elements of L[]
+    while(i < n1) {
+
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // Remaining elements of R[]
+    while(j < n2) {
+
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+// Merge Sort function
+void mergeSort(int arr[], int left, int right) {
+
+    if(left < right) {
+
+        int mid = (left + right) / 2;
+
+        mergeSort(arr, left, mid);
+
+        mergeSort(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
+
+// ---------- DISPLAY FUNCTION ----------
+
+void display(int arr[], int n) {
+
+    for(int i = 0; i < n; i++) {
+
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+}
+
+// ---------- MAIN FUNCTION ----------
+
+int main() {
+
+    int n;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr1[n], arr2[n];
+
+    printf("Enter elements:\n");
+
+    for(int i = 0; i < n; i++) {
+
+        scanf("%d", &arr1[i]);
+
+        arr2[i] = arr1[i];
+    }
+
+    // Quick Sort
+    quickSort(arr1, 0, n - 1);
+
+    printf("\nArray after Quick Sort:\n");
+
+    display(arr1, n);
+
+    // Merge Sort
+    mergeSort(arr2, 0, n - 1);
+
+    printf("\nArray after Merge Sort:\n");
+
+    display(arr2, n);
+
+    return 0;
+}
